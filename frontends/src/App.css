@@ -1,0 +1,14 @@
+.App {
+  text-align: center;
+}
+.nav-link-custom {
+  color: blue !important;          /* Text color */
+  transition: color 0.3s ease;
+  font-weight: 500;
+  
+}
+
+.nav-link-custom:hover {
+  color: orange !important;        /* Hover color */
+  text-decoration: none;
+}
