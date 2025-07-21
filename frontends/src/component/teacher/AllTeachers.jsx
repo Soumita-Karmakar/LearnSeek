@@ -59,8 +59,10 @@ const AllTeachers = () => {
               }}
             >
               <div className="card-body text-center">
-                <h5 className="card-title fw-bold">{teacher.name}</h5>
-                <p className="card-text mb-1">📘 Subject: {teacher.subjects}</p>
+                <h5 className="card-title fw-bold text-dark">{teacher.name}</h5>
+                <p className="card-text mb-1">
+                  📘 Subject: {Array.isArray(teacher.subjects) ? teacher.subjects.join(", ") : teacher.subjects}
+                </p>
                 <p className="card-text">🏙️ City: {teacher.city}</p>
                 <button
                   className="btn btn-outline-warning text-primary w-100"
@@ -72,7 +74,7 @@ const AllTeachers = () => {
             </div>
           ))
         ) : (
-          <p>No teachers available.</p>
+          <p className="text-muted">No teachers available.</p>
         )}
       </div>
     </div>

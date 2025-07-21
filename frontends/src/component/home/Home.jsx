@@ -73,7 +73,7 @@ const Home = () => {
           <input
             type="text"
             className="form-control"
-            placeholder="Search by subject or city"
+            placeholder="Search by subject or city or both (eg: kolkata math)"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             style={{ borderTopLeftRadius: '30px', borderBottomLeftRadius: '30px' }}

@@ -51,7 +51,6 @@ const addTeacher = async (req, res) => {
   }
 };
 
-
 const searchTeacher = async (req, res) => {
   try {
     const { query } = req.body;
@@ -64,8 +63,8 @@ const searchTeacher = async (req, res) => {
 
     const conditions = terms.map(term => ({
       $or: [
-        { city: { $regex: new RegExp(term, "i") } },
-        { subjects: { $in: [new RegExp(term, "i")] } }
+        { city: { $regex: term, $options: "i" } },
+        { subjects: { $regex: term, $options: "i" } }  // works if subjects is an array of strings
       ]
     }));
 
@@ -73,6 +72,7 @@ const searchTeacher = async (req, res) => {
 
     res.status(200).json(teachers);
   } catch (err) {
+    console.error("Search error:", err);
     res.status(500).json({ message: "Error searching teachers" });
   }
 };

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
 const SearchTeacher = () => {
   const [teachers, setTeachers] = useState([]);
@@ -40,29 +40,54 @@ const SearchTeacher = () => {
   }, [query]);
 
   return (
-    <div className="container mt-4">
-      <h2>Your Teachers</h2>
+    <div
+      className="py-5"
+      style={{
+        minHeight: "100vh",
+        background: "linear-gradient(to right, #fdfbfb, #ebedee)",
+      }}
+    >
+      <div className="container">
+        <h2 className="text-center fw-bold mb-5 text-dark">🔍 Search Results for Teachers</h2>
 
-      {loading && <p>Loading...</p>}
-      {error && <p className="text-danger">{error}</p>}
+        {loading && <p className="text-center text-muted">Loading...</p>}
+        {error && <p className="text-center text-danger">{error}</p>}
 
-      <div className="row mt-3">
-        {teachers.length > 0 ? (
-          teachers.map((teacher, i) => (
-            <div className="col-md-4 mb-3" key={i}>
-              <div className="card p-3">
-                <h5>{teacher.name}</h5>
-                <p><strong>City:</strong> {teacher.city}</p>
-                <p><strong>Subjects:</strong> {teacher.subjects?.join(", ")}</p>
-                <Link to={`/teacher/${teacher._id}`} className="btn btn-primary ">
-                    View Profile
-                </Link>
+        <div className="row">
+          {teachers.length > 0 ? (
+            teachers.map((teacher, i) => (
+              <div className="col-md-4 mb-4" key={i}>
+                <div
+                  className="card border-0 shadow-lg h-100"
+                  style={{
+                    borderRadius: "20px",
+                    background: "#ffffff",
+                    transition: "transform 0.3s ease",
+                  }}
+                >
+                  <div className="card-body p-4">
+                    <h5 className="fw-bold text-primary">{teacher.name}</h5>
+                    <p className="mb-1"><strong>📍 City:</strong> {teacher.city}</p>
+                    <p><strong>📘 Subjects:</strong> {teacher.subjects?.join(", ")}</p>
+                    <Link
+                      to={`/teacher/${teacher._id}`}
+                      className="btn btn-outline-primary w-100 mt-3"
+                      style={{ borderRadius: "12px" }}
+                    >
+                      View Profile
+                    </Link>
+                  </div>
+                </div>
               </div>
-            </div>
-          ))
-        ) : (
-          !loading && <p>No teachers found.</p>
-        )}
+            ))
+          ) : (
+            !loading && (
+              <div className="text-center text-muted mt-4">
+                <p>No teachers found matching your query.</p>
+              </div>
+            )
+          )}
+        </div>
       </div>
     </div>
   );
