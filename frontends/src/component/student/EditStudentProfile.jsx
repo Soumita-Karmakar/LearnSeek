@@ -63,7 +63,7 @@ const EditStudentProfile = () => {
       const result = await res.json();
 
       if (res.ok) {
-        toast.success("Profile updated successfully!");
+        toast.success("✅ Profile updated successfully!");
         setTimeout(() => navigate("/profile"), 2000);
       } else {
         toast.error(result.message || "Update failed");
@@ -75,38 +75,53 @@ const EditStudentProfile = () => {
   };
 
   return (
-    <div className="container mt-4">
-      <h2>Edit Student Profile</h2>
+    <div
+      className="d-flex justify-content-center align-items-center"
+      style={{ minHeight: "100vh", background: "linear-gradient(to right, #e0f2f1, #f1f8e9)" }}
+    >
+      <div className="card shadow-lg p-4 w-100" style={{ maxWidth: "800px", backgroundColor: "#ffffffcc", borderRadius: "20px" }}>
+        <h3 className="text-center text-primary mb-4">📝 Edit Student Profile</h3>
+        <form onSubmit={handleSubmit}>
+          <div className="row g-3">
+            <div className="col-md-6">
+              <label className="form-label fw-bold">👤 Name</label>
+              <input name="name" value={studentData.name} disabled className="form-control" />
 
-      <form onSubmit={handleSubmit}>
-        <div className="row">
-          <div className="col-md-6">
-            <label>Name</label>
-            <input name="name" value={studentData.name} disabled className="form-control mb-2" />
+              <label className="form-label fw-bold mt-3">📧 Email</label>
+              <input name="email" value={studentData.email} disabled className="form-control" />
 
-            <label>Email</label>
-            <input name="email" value={studentData.email} disabled className="form-control mb-2" />
+              <label className="form-label fw-bold mt-3">📱 Phone</label>
+              <input name="phone" value={studentData.phone} onChange={handleChange} className="form-control" />
 
-            <label>Phone</label>
-            <input name="phone" value={studentData.phone} onChange={handleChange} className="form-control mb-2" />
+              <label className="form-label fw-bold mt-3">🏙️ City</label>
+              <input name="city" value={studentData.city} onChange={handleChange} className="form-control" />
+            </div>
 
-            <label>City</label>
-            <input name="city" value={studentData.city} onChange={handleChange} className="form-control mb-2" />
+            <div className="col-md-6">
+              <label className="form-label fw-bold">🏫 Class</label>
+              <input name="class" value={studentData.class} onChange={handleChange} className="form-control" />
+
+              <label className="form-label fw-bold mt-3">📝 Bio</label>
+              <textarea
+                name="bio"
+                value={studentData.bio}
+                onChange={handleChange}
+                className="form-control"
+                rows={5}
+                placeholder="Tell us something about yourself..."
+              />
+            </div>
           </div>
 
-          <div className="col-md-6">
-            <label>Class</label>
-            <input name="class" value={studentData.class} onChange={handleChange} className="form-control mb-2" />
-
-            <label>Bio</label>
-            <textarea name="bio" value={studentData.bio} onChange={handleChange} className="form-control mb-2" rows={3} />
+          <div className="d-flex justify-content-center mt-4">
+            <button type="submit" className="btn btn-success px-4 py-2">
+              ✅ Update Profile
+            </button>
           </div>
-        </div>
+        </form>
 
-        <button type="submit" className="btn btn-success">Update Profile</button>
-      </form>
-
-      <ToastContainer position="top-center" autoClose={3000} />
+        <ToastContainer position="top-center" autoClose={3000} />
+      </div>
     </div>
   );
 };

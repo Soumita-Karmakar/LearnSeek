@@ -12,7 +12,6 @@ const ChatBox = () => {
   const currentUserId = currentUser?.id;
   const currentUserModel = currentUser?.role === "student" ? "Student" : "Teacher";
 
-  // Fetch messages
   useEffect(() => {
     const fetchMessages = async () => {
       try {
@@ -24,11 +23,9 @@ const ChatBox = () => {
         console.error("Fetch error:", err);
       }
     };
-
     fetchMessages();
   }, [studentId, teacherId]);
 
-  // Send message
   const handleSend = async () => {
     if (!text.trim()) return toast.warn("Type something first");
 
@@ -56,29 +53,85 @@ const ChatBox = () => {
   };
 
   return (
-    <div className="container mt-4">
-      <h4 className="text-center mb-3">Chat</h4>
-      <div style={{ maxHeight: "300px", overflowY: "auto", background: "#f1f1f1", padding: "10px" }}>
-        {messages.map((msg, idx) => (
-          <div
-            key={idx}
-            className={`p-2 mb-2 rounded ${msg.senderId === currentUserId ? "bg-primary text-white text-end" : "bg-light text-start"}`}
+    <div
+      className="d-flex align-items-center justify-content-center"
+      style={{
+        minHeight: "100vh",
+        background: "linear-gradient(to right top, #fceabb, #ab92fcff)",
+        padding: "2rem",
+      }}
+    >
+      <div
+        className="container p-4 rounded"
+        style={{
+          background: "rgba(255, 255, 255, 0.3)",
+          backdropFilter: "blur(12px)",
+          boxShadow: "0 8px 32px rgba(0, 0, 0, 0.2)",
+          border: "1px solid rgba(255, 255, 255, 0.4)",
+          borderRadius: "20px",
+          maxWidth: "700px",
+          width: "100%",
+        }}
+      >
+        <h4 className="text-center fw-bold mb-4 text-dark">Live Chat</h4>
+
+        <div
+          style={{
+            maxHeight: "350px",
+            overflowY: "auto",
+            padding: "15px",
+            backgroundColor: "#ffffff70",
+            borderRadius: "15px",
+            marginBottom: "1rem",
+            boxShadow: "inset 0 0 10px rgba(0,0,0,0.1)",
+          }}
+        >
+          {messages.map((msg, idx) => (
+            <div
+              key={idx}
+              className={`p-3 mb-2 rounded-pill shadow-sm w-75 ${
+                msg.senderId === currentUserId
+                  ? "ms-auto"
+                  : "me-auto"
+              }`}
+              style={{
+                backgroundColor: msg.senderId === currentUserId ? "#e89a67ff" : "#f3bdbdff",
+                color: msg.senderId === currentUserId ? "#000000ff" : "#333",
+                wordBreak: "break-word",
+                fontSize: "0.95rem",
+                textAlign: msg.senderId === currentUserId ? "right" : "left",
+              }}
+            >
+              {msg.text}
+              <div className="text-muted small mt-1">
+                {new Date(msg.createdAt).toLocaleString()}
+              </div>
+            </div>
+          ))}
+          <div ref={scrollRef}></div>
+        </div>
+
+        <div className="d-flex">
+          <input
+            type="text"
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+            className="form-control me-2 rounded-pill shadow-sm"
+            placeholder="Type your message..."
+            style={{ backgroundColor: "#fff", border: "1px solid #ccc" }}
+          />
+          <button
+            className="btn rounded-pill px-4 shadow-sm"
+            onClick={handleSend}
+            style={{
+              backgroundColor: "#20c997",
+              color: "#fff",
+              border: "none",
+            }}
           >
-            {msg.text}
-            <div className="text-muted small">{new Date(msg.createdAt).toLocaleString()}</div>
-          </div>
-        ))}
-        <div ref={scrollRef}></div>
-      </div>
-      <div className="d-flex mt-3">
-        <input
-          type="text"
-          value={text}
-          onChange={(e) => setText(e.target.value)}
-          className="form-control me-2"
-          placeholder="Type your message..."
-        />
-        <button className="btn btn-success" onClick={handleSend}>Send</button>
+            Send
+          </button>
+        </div>
       </div>
     </div>
   );

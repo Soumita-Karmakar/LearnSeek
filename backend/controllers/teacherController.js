@@ -112,19 +112,31 @@ const getHomeTeachers = async (req, res) => {
   }
 };
 
-const getTeacherDetails = async (req, res) =>{
-    try{
-        const { id } = req.params;
-        if (!id) {
-            return res.status(400).json({message : "ID required "})
-        }
-        const teacher = await Teacher.findById(id)
-
-        res.status(200).json(teacher)
-    } catch{
-        res.status(500).json({message : "Error getting teacher details "})
+const getTeacherDetails = async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (!id) {
+      return res.status(400).json({ message: "ID required" });
     }
-}
+
+    const teacher = await Teacher.findById(id);
+    if (!teacher) {
+      return res.status(404).json({ message: "Teacher not found" });
+    }
+
+    // ✅ Check if custom image or default
+    const profileImageUrl =
+      teacher.profileImage && teacher.profileImage !== "default-profile.png"
+        ? `http://localhost:8000/uploads/${teacher.profileImage}`
+        : null; // return null if default
+
+    res.status(200).json({ ...teacher._doc, profileImage: profileImageUrl });
+  } catch (error) {
+    res.status(500).json({ message: "Error getting teacher details" });
+  }
+};
+
+
 
 const AllTeachers = async (req,res) => {
     try{

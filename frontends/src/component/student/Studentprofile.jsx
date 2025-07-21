@@ -72,56 +72,88 @@ const StudentProfile = () => {
   }, [user.id]);
 
   return (
-    <div className="container mt-4">
-      <h2 className="text-center">MY Profile</h2>
-
-      {/* Profile Image */}
-      <div className="text-center mb-3">
-        <img
-          src={
-            studentData.profileImage?.startsWith("http")
-              ? studentData.profileImage
-              : `http://localhost:8000/uploads/${studentData.profileImage}`
-          }
-          onError={(e) => {
-            e.target.onerror = null;
-            e.target.src = "/default-profile.png";
-          }}
-          alt="Profile"
-          width={120}
-          height={120}
-          style={{ borderRadius: "50%", objectFit: "cover" }}
-        />
-        <div className="mt-2">
-          <input type="file" accept="image/png, image/jpeg" onChange={handleImageChange} />
+    <div
+      className="d-flex align-items-center justify-content-center"
+      style={{
+        minHeight: "100vh",
+        background: "linear-gradient(to right top, #fefcea, #9795f0)",
+        padding: "2rem",
+      }}
+    >
+      <div
+        className="glass-card p-4 d-flex flex-column flex-md-row gap-4 text-dark"
+        style={{
+          borderRadius: "20px",
+          backdropFilter: "blur(12px)",
+          background: "rgba(255, 255, 255, 0.25)",
+          boxShadow: "0 8px 32px rgba(31, 38, 135, 0.37)",
+          width: "100%",
+          maxWidth: "960px",
+        }}
+      >
+        {/* Profile Image Section */}
+        <div className="text-center">
+          <img
+            src={
+              studentData.profileImage?.startsWith("http")
+                ? studentData.profileImage
+                : `http://localhost:8000/uploads/${studentData.profileImage}`
+            }
+            onError={(e) => {
+              e.target.onerror = null;
+              e.target.src = "/default-profile.png";
+            }}
+            alt="Profile"
+            style={{
+              width: "160px",
+              height: "160px",
+              objectFit: "cover",
+              borderRadius: "50%",
+              border: "4px solid #007bff",
+              boxShadow: "0 4px 16px rgba(0, 0, 0, 0.1)",
+            }}
+          />
+          <div className="mt-3">
+            <input type="file" accept="image/png, image/jpeg" onChange={handleImageChange} />
+          </div>
+          <h5 className="mt-3 fw-bold">{studentData.name}</h5>
+          <p className="text-muted small">{studentData.email}</p>
         </div>
-      </div>
 
-      {/* Info Section */}
-      <div className="row justify-content-center">
-        <div className="col-md-4">
-          <p><strong>Name:</strong> {studentData.name}</p>
-          <p><strong>Email:</strong> {studentData.email}</p>
-          <p><strong>Phone:</strong> {studentData.phone}</p>
-        </div>
-        <div className="col-md-4">
-          <p><strong>City:</strong> {studentData.city}</p>
-          <p><strong>Class:</strong> {studentData.class}</p>
-          <p><strong>Bio:</strong> {studentData.bio || "N/A"}</p>
-        </div>
-      </div>
+        {/* Info Section */}
+        <div className="flex-grow-1">
+          <h4 className="text-primary mb-3">🎓 My Profile</h4>
+          <div className="row">
+            <div className="col-sm-6 mb-3">
+              <strong>📞 Phone:</strong>
+              <p>{studentData.phone}</p>
+            </div>
+            <div className="col-sm-6 mb-3">
+              <strong>🏙️ City:</strong>
+              <p>{studentData.city}</p>
+            </div>
+            <div className="col-sm-6 mb-3">
+              <strong>🏫 Class:</strong>
+              <p>{studentData.class}</p>
+            </div>
+            <div className="col-sm-6 mb-3">
+              <strong>📝 Bio:</strong>
+              <p>{studentData.bio || "N/A"}</p>
+            </div>
+          </div>
 
-      {/* Navigation Buttons */}
-      <div className="text-center my-4">
-        <Link to={`/editStudentprofile/${user.id}`} className="btn btn-primary me-2">
-          Edit Profile
-        </Link>
-        <Link to="/mychats" className="btn btn-outline-success me-2">
-          My Chats
-        </Link>
-        <Link to="/myreviews" className="btn btn-outline-warning">
-          My Reviews
-        </Link>
+          <div className="mt-4 d-flex flex-wrap gap-2">
+            <Link to={`/editStudentprofile/${user.id}`} className="btn btn-outline-dark">
+              ✏️ Edit Profile
+            </Link>
+            <Link to="/mychats" className="btn btn-outline-success">
+              💬 My Chats
+            </Link>
+            <Link to="/myreviews" className="btn btn-outline-warning text-dark">
+              🌟 My Reviews
+            </Link>
+          </div>
+        </div>
       </div>
     </div>
   );

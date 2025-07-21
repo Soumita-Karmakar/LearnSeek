@@ -14,13 +14,11 @@ const AllTeachers = () => {
         const result = await response.json();
 
         if (!response.ok) {
-          console.log(result.error);
           setError(result.error || "Something went wrong");
         } else {
           setData(result);
         }
       } catch (err) {
-        console.error("Fetch error:", err);
         setError("Failed to fetch data");
       }
     };
@@ -30,33 +28,46 @@ const AllTeachers = () => {
 
   const handleViewProfile = (teacherId) => {
     if (!user) {
-      navigate("/login"); 
+      navigate("/login");
     } else {
       navigate(`/teacher/${teacherId}`);
     }
   };
 
   return (
-    <div className="container mt-4">
-      <h2>All Teachers</h2>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+    <div
+      className="d-flex flex-column align-items-center justify-content-center"
+      style={{
+        minHeight: "100vh",
+        background: "linear-gradient(to right, #e0f7fa, #f1f8e9)",
+        padding: "2rem",
+      }}
+    >
+      <h2 className="mb-4 text-primary fw-bold">👩‍🏫 All Teachers</h2>
+      {error && <p className="text-danger">{error}</p>}
 
-      <div className="row">
+      <div className="d-flex flex-wrap justify-content-center gap-4">
         {data.length > 0 ? (
           data.map((teacher, index) => (
-            <div key={index} className="col-md-4 mb-3">
-              <div className="card">
-                <div className="card-body">
-                  <h5 className="card-title">{teacher.name}</h5>
-                  <p className="card-text">Subject: {teacher.subjects}</p>
-                  <p className="card-text">City: {teacher.city}</p>
-                  <button
-                    className="btn btn-primary"
-                    onClick={() => handleViewProfile(teacher._id)}
-                  >
-                    View Profile
-                  </button>
-                </div>
+            <div
+              key={index}
+              className="card shadow"
+              style={{
+                width: "18rem",
+                borderRadius: "1rem",
+                backgroundColor: "#ffffffee",
+              }}
+            >
+              <div className="card-body text-center">
+                <h5 className="card-title fw-bold">{teacher.name}</h5>
+                <p className="card-text mb-1">📘 Subject: {teacher.subjects}</p>
+                <p className="card-text">🏙️ City: {teacher.city}</p>
+                <button
+                  className="btn btn-outline-warning text-primary w-100"
+                  onClick={() => handleViewProfile(teacher._id)}
+                >
+                  View Profile
+                </button>
               </div>
             </div>
           ))

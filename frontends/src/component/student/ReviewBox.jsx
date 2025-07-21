@@ -51,30 +51,79 @@ const ReviewBox = () => {
   };
 
   return (
-    <div className="container mt-4">
-      <h4 className="text-center mb-3">Review Teacher</h4>
-      <label>Rating (1–5):</label>
-      <select
-        className="form-select mb-2"
-        value={rating}
-        onChange={(e) => setRating(parseInt(e.target.value))}
+    <div
+      style={{
+        minHeight: "100vh",
+        background: "linear-gradient(to right, #fceabb, #f8b500)",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: "2rem",
+      }}
+    >
+      <div
+        className="shadow-lg p-4"
+        style={{
+          maxWidth: "600px",
+          width: "100%",
+          background: "rgba(255, 255, 255, 0.6)",
+          borderRadius: "20px",
+          backdropFilter: "blur(12px)",
+          border: "1px solid rgba(255,255,255,0.3)",
+        }}
       >
-        {[1, 2, 3, 4, 5].map((val) => (
-          <option key={val} value={val}>{val}</option>
-        ))}
-      </select>
+        <h4 className="text-center mb-4 fw-bold text-dark">
+          {existingReview ? "📝 Update Your Review" : "✍️ Write a Review"}
+        </h4>
 
-      <textarea
-        className="form-control"
-        rows="5"
-        value={review}
-        onChange={(e) => setReview(e.target.value)}
-        placeholder="Write your review here..."
-      ></textarea>
+        {/* Rating */}
+        <div className="mb-3">
+          <label className="form-label fw-semibold text-dark">Rating:</label>
+          <select
+            className="form-select rounded-pill px-3 py-2"
+            style={{ backgroundColor: "#fff9e6", border: "1px solid #f0c36d" }}
+            value={rating}
+            onChange={(e) => setRating(parseInt(e.target.value))}
+          >
+            {[1, 2, 3, 4, 5].map((val) => (
+              <option key={val} value={val}>
+                {"⭐".repeat(val)} ({val})
+              </option>
+            ))}
+          </select>
+        </div>
 
-      <button className="btn btn-primary mt-3" onClick={handleSubmit}>
-        {existingReview ? "Update Review" : "Submit Review"}
-      </button>
+        {/* Review Text */}
+        <div className="mb-3">
+          <label className="form-label fw-semibold text-dark">Review:</label>
+          <textarea
+            className="form-control rounded-4 shadow-sm"
+            rows="4"
+            value={review}
+            onChange={(e) => setReview(e.target.value)}
+            placeholder="Share your experience..."
+            style={{ backgroundColor: "#fffef2", border: "1px solid #f0c36d" }}
+          />
+        </div>
+
+        {/* Submit Button */}
+        <div className="text-end">
+          <button
+            onClick={handleSubmit}
+            className="btn w-100 fw-bold rounded-pill"
+            style={{
+              backgroundColor: "#ff9900",
+              color: "#fff",
+              transition: "0.3s",
+              letterSpacing: "0.5px",
+            }}
+            onMouseOver={(e) => (e.target.style.backgroundColor = "#e68a00")}
+            onMouseOut={(e) => (e.target.style.backgroundColor = "#ff9900")}
+          >
+            {existingReview ? "Update Review ✅" : "Submit Review 🚀"}
+          </button>
+        </div>
+      </div>
     </div>
   );
 };
