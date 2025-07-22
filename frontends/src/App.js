@@ -18,6 +18,8 @@ import MyReview from './component/student/MyReview'
 import ReviewBox from './component/student/ReviewBox'
 import TeacherMyChats from "./component/teacher/TeacherMyChats";
 import TeacherMyReviews from "./component/teacher/TeacherMyReviews";
+import About from "./component/About";
+import Contact from "./component/Contact";
 
 
 function App() {
@@ -43,6 +45,8 @@ function App() {
           <Route path="/review/:studentId/:teacherId" element={<ReviewBox />} />
           <Route path="/teachermychats" element={<TeacherMyChats />} />
           <Route path="/teacherreviews" element={<TeacherMyReviews />} />
+          <Route path="/about" element={<About/>}/>
+          <Route path="/contact" element={<Contact/>}/>
 
 
 
