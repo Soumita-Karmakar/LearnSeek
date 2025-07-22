@@ -157,7 +157,7 @@ const Home = () => {
 
 
       {/* TOP TEACHERS */}
-   <section
+<section
   className="py-5"
   style={{
     background: "linear-gradient(to bottom, #b8e3f1, #4098d7)",
@@ -198,12 +198,29 @@ const Home = () => {
               }}
             >
               <div className="card-body">
-                <h5
-                  className="card-title fw-bold mb-2"
-                  style={{ color: "#2a5d9f" }}
-                >
-                  {teacher.name}
-                </h5>
+                <div className="d-flex align-items-center mb-3">
+                  <img
+                    src={teacher.profileImage || "/default-profile.png"}
+                    alt="Teacher"
+                    className="rounded-circle me-3"
+                    style={{
+                      width: "50px",
+                      height: "50px",
+                      objectFit: "cover",
+                      border: "2px solid #fff",
+                    }}
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src = "/default-profile.png";
+                    }}
+                  />
+                  <h5
+                    className="card-title fw-bold mb-0"
+                    style={{ color: "#2a5d9f" }}
+                  >
+                    {teacher.name}
+                  </h5>
+                </div>
                 <p className="card-text mb-2">
                   <strong>Subject:</strong>{" "}
                   <span className="text-muted">{teacher.subject}</span>
@@ -213,14 +230,14 @@ const Home = () => {
                   <span className="text-muted">{teacher.city}</span>
                 </p>
                 <p className="card-text mb-0">
-  <strong>Rating:</strong>{" "}
-  <span className="text-warning">
-    {"⭐".repeat(Math.round(teacher.rating || 0))}
-  </span>{" "}
-  <span className="text-dark">
-    ({teacher.rating ? teacher.rating.toFixed(1) : "N/A"} / 5)
-  </span>
-</p>
+                  <strong>Rating:</strong>{" "}
+                  <span className="text-warning">
+                    {"⭐".repeat(Math.round(teacher.rating || 0))}
+                  </span>{" "}
+                  <span className="text-dark">
+                    ({teacher.rating ? teacher.rating.toFixed(1) : "N/A"} / 5)
+                  </span>
+                </p>
               </div>
             </div>
           </div>
@@ -233,6 +250,7 @@ const Home = () => {
     </div>
   </div>
 </section>
+
 
 
       {/* STUDENT REVIEWS */}

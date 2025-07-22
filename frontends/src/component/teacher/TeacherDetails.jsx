@@ -32,44 +32,62 @@ const TeacherDetails = () => {
   }, [id]);
 
   const handleChat = () => {
-    if (!user || user.role !== "student") {
-      toast.warn("Only logged-in students can start a chat");
-      return navigate("/login");
-    }
+  if (!user) {
+    toast.warn("⚠️ Please log in to start a chat");
+    return navigate("/login");
+  }
+
+  // Prevent chatting with self (whether student or teacher)
+  if (user.id === teacher._id) {
+    toast.info("ℹ️ You cannot chat with yourself");
+    return;
+  }
+
+  // Only allow students or teachers (not admins or others if any)
+  if (user.role === "student" || user.role === "teacher") {
     navigate(`/chat/${user.id}/${teacher._id}`);
-  };
+  } else {
+    toast.error("❌ You are not authorized to start a chat");
+  }
+};
 
-  const handleReviewSubmit = async () => {
-    if (!user || user.role !== "student") {
-      toast.warn("Only logged-in students can give reviews");
-      return navigate("/login");
+ const handleReviewSubmit = async () => {
+  if (!user) {
+    toast.warn("Please log in to submit a review");
+    return navigate("/login");
+  }
+
+  if (user.role !== "student") {
+    toast.error("Only students can submit reviews");
+    return;
+  }
+
+  if (!reviewText.trim()) {
+    toast.warn("Please write something in the review");
+    return;
+  }
+
+  try {
+    const res = await fetch(`http://localhost:8000/api/reviews/${user.id}/${teacher._id}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ content: reviewText, rating }),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      toast.error(data.message || "Failed to submit review");
+    } else {
+      toast.success("Review submitted successfully!");
+      setReviewText("");
+      setRating(5);
     }
+  } catch {
+    toast.error("Network error");
+  }
+};
 
-    if (!reviewText.trim()) {
-      toast.warn("Please enter a review before submitting");
-      return;
-    }
-
-    try {
-      const response = await fetch(`http://localhost:8000/api/reviews/${user.id}/${teacher._id}`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ content: reviewText, rating }),
-      });
-
-      const result = await response.json();
-
-      if (!response.ok) {
-        toast.error(result.message || "Failed to submit review");
-      } else {
-        toast.success("✅ Review submitted successfully!");
-        setReviewText("");
-        setRating(5);
-      }
-    } catch (err) {
-      toast.error("Network error");
-    }
-  };
 
   if (error) return <p className="text-danger text-center">{error}</p>;
   if (!teacher) return <p className="text-center">Loading...</p>;

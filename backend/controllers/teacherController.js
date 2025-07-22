@@ -266,13 +266,14 @@ const updateTeacherProfileImage = async (req, res) => {
 // Get Top Rated Teachers and Popular Subjects
 const getTopRatedTeachers = async (req, res) => {
   try {
-    const topTeachers = await Teacher.find()
+    const topTeachersRaw = await Teacher.find()
       .sort({ rating: -1 }) // Sort by highest rating
       .limit(6); // Limit to top 6 teachers
 
     const subjectCounts = {};
 
-    topTeachers.forEach((teacher) => {
+    // Process each teacher
+    const topTeachers = topTeachersRaw.map((teacher) => {
       const subjects = Array.isArray(teacher.subjects)
         ? teacher.subjects
         : teacher.subjects?.split(',') || [];
@@ -281,9 +282,20 @@ const getTopRatedTeachers = async (req, res) => {
         const trimmed = subj.trim().toLowerCase();
         subjectCounts[trimmed] = (subjectCounts[trimmed] || 0) + 1;
       });
+
+      // ✅ Add profile image URL
+      const profileImage =
+        teacher.profileImage && teacher.profileImage !== "default-profile.png"
+          ? `http://localhost:8000/uploads/${teacher.profileImage}`
+          : null;
+
+      return {
+        ...teacher._doc,
+        profileImage,
+      };
     });
 
-    // Get unique and most frequent subjects (top 5)
+    // ✅ Get unique and most frequent subjects (top 5)
     const popularSubjects = Object.entries(subjectCounts)
       .sort((a, b) => b[1] - a[1])
       .slice(0, 5)
