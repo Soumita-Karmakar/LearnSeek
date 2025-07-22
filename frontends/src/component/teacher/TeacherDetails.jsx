@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const TeacherDetails = () => {
   const { id } = useParams();
@@ -61,7 +62,7 @@ const TeacherDetails = () => {
       if (!response.ok) {
         toast.error(result.message || "Failed to submit review");
       } else {
-        toast.success("Review submitted successfully!");
+        toast.success("✅ Review submitted successfully!");
         setReviewText("");
         setRating(5);
       }
@@ -82,6 +83,9 @@ const TeacherDetails = () => {
         padding: "2rem",
       }}
     >
+      {/* ✅ Toast container added here */}
+      <ToastContainer position="top-right" autoClose={3000} />
+
       <div
         className="card shadow border-0 p-4"
         style={{
@@ -162,7 +166,7 @@ const TeacherDetails = () => {
             className="btn btn-success w-100 fw-bold"
             onClick={handleReviewSubmit}
           >
-            ✅ Submit Review
+            Submit Review
           </button>
         </div>
       </div>
