@@ -23,7 +23,6 @@ const TeacherProfile = () => {
     const file = e.target.files[0];
     if (!file) return;
 
-    // ✅ Validate image type and size
     if (!["image/jpeg", "image/png"].includes(file.type)) {
       alert("Only JPG and PNG files allowed");
       return;
@@ -43,15 +42,17 @@ const TeacherProfile = () => {
       });
 
       const data = await res.json();
-      if (res.ok) {
-        // ✅ Update image after upload
-        setTeacherData((prev) => ({
-          ...prev,
-          profileImage: data.profileImage,
-        }));
-      } else {
-        alert("Upload failed");
-      }
+     if (res.ok) {
+  setTeacherData((prev) => ({
+    ...prev,
+    profileImage: data.profileImage,
+  }));
+ window.dispatchEvent(new Event("profileImageUpdated"));
+
+} else {
+  alert("Upload failed");
+}
+
     } catch (err) {
       console.error("Image upload error:", err);
     }
@@ -84,11 +85,34 @@ const TeacherProfile = () => {
   }, [user.id]);
 
   return (
-    <div className="container mt-4">
-      <h2>MY Profile</h2>
+    <div
+      className="container mt-4"
+      style={{
+        background: "linear-gradient(to bottom right, #ffffff, #e6f7ff)",
+        padding: "2rem",
+        borderRadius: "1rem",
+        boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+      }}
+    >
+      {/* 👤 Page Heading */}
+      <div className="text-center mb-4">
+        <h2
+          style={{
+            fontSize: "2.4rem",
+            fontWeight: "bold",
+            color: "#007acc",
+            textShadow: "1px 1px 2px rgba(0,0,0,0.1)",
+            
+           
+            paddingBottom: "6px",
+          }}
+        >
+          👤 My Profile
+        </h2>
+      </div>
 
-      {/* Profile Image with Upload Button */}
-      <div className="text-center mb-3">
+      {/* Profile Image with Upload */}
+      <div className="text-center mb-4">
         <img
           src={
             teacherData.profileImage?.startsWith("http")
@@ -102,10 +126,19 @@ const TeacherProfile = () => {
           alt="Profile"
           width={120}
           height={120}
-          style={{ borderRadius: "50%", objectFit: "cover" }}
+          style={{
+            borderRadius: "50%",
+            objectFit: "cover",
+            border: "3px solid #00bcd4",
+          }}
         />
         <div className="mt-2">
-          <input type="file" accept="image/png, image/jpeg" onChange={handleImageChange} />
+          <input
+            type="file"
+            accept="image/png, image/jpeg"
+            onChange={handleImageChange}
+            className="form-control-sm"
+          />
         </div>
       </div>
 
@@ -131,15 +164,18 @@ const TeacherProfile = () => {
         <p><strong>Bio:</strong> {teacherData.bio}</p>
       </div>
 
-      <Link to={`/editTeacherprofile/${user.id}`} className="btn btn-primary me-2">
-        Edit Profile
-      </Link>
-      <Link to="/teachermychats" className="btn btn-outline-success me-2">
-        My Chats
-      </Link>
-      <Link to="/teacherreviews" className="btn btn-outline-warning">
-        My Reviews
-      </Link>
+      {/* Action Buttons */}
+      <div className="text-center">
+        <Link to={`/editTeacherprofile/${user.id}`} className="btn btn-primary me-2">
+          ✏️ Edit Profile
+        </Link>
+        <Link to="/teachermychats" className="btn btn-outline-success me-2">
+          💬 My Chats
+        </Link>
+        <Link to="/teacherreviews" className="btn btn-outline-warning">
+          ⭐ My Reviews
+        </Link>
+      </div>
     </div>
   );
 };

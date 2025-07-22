@@ -15,40 +15,44 @@ const StudentProfile = () => {
   });
 
   const handleImageChange = async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
+  const file = e.target.files[0];
+  if (!file) return;
 
-    if (!["image/jpeg", "image/png"].includes(file.type)) {
-      alert("Only JPG and PNG images are allowed");
-      return;
+  if (!["image/jpeg", "image/png"].includes(file.type)) {
+    alert("Only JPG and PNG images are allowed");
+    return;
+  }
+  if (file.size > 1024 * 1024) {
+    alert("Image must be less than 1MB");
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append("profileImage", file);
+
+  try {
+    const res = await fetch(`http://localhost:8000/api/student/uploadProfileImage/${user.id}`, {
+      method: "PATCH",
+      body: formData,
+    });
+
+    const data = await res.json();
+    if (res.ok) {
+      setStudentData((prev) => ({
+        ...prev,
+        profileImage: data.profileImage,
+      }));
+
+      // ✅ Dispatch this so Navbar listens and refreshes
+      window.dispatchEvent(new Event("profileImageUpdated"));
+    } else {
+      alert("Upload failed");
     }
-    if (file.size > 1024 * 1024) {
-      alert("Image must be less than 1MB");
-      return;
-    }
+  } catch (err) {
+    console.error("Image upload error:", err);
+  }
+};
 
-    const formData = new FormData();
-    formData.append("profileImage", file);
-
-    try {
-      const res = await fetch(`http://localhost:8000/api/student/uploadProfileImage/${user.id}`, {
-        method: "PATCH",
-        body: formData,
-      });
-
-      const data = await res.json();
-      if (res.ok) {
-        setStudentData((prev) => ({
-          ...prev,
-          profileImage: data.profileImage,
-        }));
-      } else {
-        alert("Upload failed");
-      }
-    } catch (err) {
-      console.error("Image upload error:", err);
-    }
-  };
 
   useEffect(() => {
     const fetchProfile = async () => {

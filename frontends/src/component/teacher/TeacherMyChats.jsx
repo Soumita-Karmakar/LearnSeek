@@ -20,33 +20,53 @@ const MyChatsTeacher = () => {
   }, [user.id, user.role]);
 
   return (
-    <div className="container mt-4">
-      <h3 className="text-center">My Chats</h3>
-      {chats.length === 0 ? (
-        <p>No conversations yet.</p>
-      ) : (
-        <ul className="list-group">
-          {chats.map((chat, idx) => {
-            const otherUser =
-              chat.senderId._id === user.id ? chat.receiverId : chat.senderId;
+    <div
+      style={{
+        minHeight: "100vh",
+        background: "linear-gradient(to right, #f9fbe7, #e0f7fa)",
+      }}
+    >
+      <div className="container py-5">
+        <h3 className="text-center mb-4 text-primary fw-bold">💬 My Conversations</h3>
 
-            return (
-              <li key={idx} className="list-group-item d-flex justify-content-between align-items-center">
-                <div>
-                  <strong>Chat with: {otherUser.name}</strong><br />
-                  <small className="text-muted">{chat.text}</small>
-                </div>
-                <Link
-                  to={`/chat/${user.role === "Teacher" ? user.id : otherUser._id}/${user.role === "Teacher" ? otherUser._id : user.id}`}
-                  className="btn btn-outline-primary"
-                >
-                  Continue Chat
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
-      )}
+        {chats.length === 0 ? (
+          <p className="text-center text-muted">No conversations yet.</p>
+        ) : (
+          <div className="row justify-content-center">
+            <div className="col-md-10">
+              <div className="list-group">
+                {chats.map((chat, idx) => {
+                  const otherUser =
+                    chat.senderId._id === user.id ? chat.receiverId : chat.senderId;
+
+                  return (
+                    <div
+                      key={idx}
+                      className="list-group-item list-group-item-action shadow-sm rounded mb-3"
+                      style={{ backgroundColor: "#ffffffcc" }}
+                    >
+                      <div className="d-flex justify-content-between align-items-center">
+                        <div>
+                          <h5 className="mb-1 text-dark">👤 {otherUser.name}</h5>
+                          <p className="mb-0 text-secondary">
+                            {chat.text || "Start the conversation..."}
+                          </p>
+                        </div>
+                        <Link
+                          to={`/chat/${user.role === "Teacher" ? user.id : otherUser._id}/${user.role === "Teacher" ? otherUser._id : user.id}`}
+                          className="btn btn-sm btn-outline-success"
+                        >
+                          Continue Chat
+                        </Link>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

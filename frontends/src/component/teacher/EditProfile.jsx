@@ -44,20 +44,14 @@ const EditProfile = () => {
       try {
         const res = await fetch(`http://localhost:8000/api/teacher/teacherDetails/${id}`);
         const data = await res.json();
-
-        if (res.ok) {
-          setTeacherData(normalizeData(data));
-        } else {
-          toast.error("Failed to fetch profile");
-        }
+        if (res.ok) setTeacherData(normalizeData(data));
+        else toast.error("Failed to fetch profile");
       } catch (err) {
         console.error("Fetch error:", err);
         toast.error("Something went wrong while fetching");
       }
     };
-
     fetchProfile();
-    
   }, [id]);
 
   const handleChange = (e) => {
@@ -67,7 +61,6 @@ const EditProfile = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const payload = {
       ...teacherData,
       subjects: teacherData.subjects
@@ -84,7 +77,6 @@ const EditProfile = () => {
       });
 
       const result = await res.json();
-
       if (res.ok) {
         toast.success("Profile updated successfully!");
         setTimeout(() => navigate("/profile"), 2000);
@@ -98,59 +90,78 @@ const EditProfile = () => {
   };
 
   return (
-    <div className="container mt-4">
-      <h2>Edit Teacher Profile</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="row">
-          <div className="col-md-6">
-            <label>Name</label>
-            <input name="name" value={teacherData.name} onChange={handleChange} className="form-control mb-2" />
+    <div className="container my-5">
+      {/* Header Section */}
+      <div
+        className="rounded p-4 mb-4 text-white"
+        style={{
+          background: "linear-gradient(to right, #6dd5ed, #2193b0)",
+        }}
+      >
+        <h2 className="mb-0 fw-bold">Edit Your Profile</h2>
+        <p className="mb-0">Update your information to keep your profile accurate.</p>
+      </div>
 
-            <label>Email</label>
-            <input name="email" value={teacherData.email} onChange={handleChange} className="form-control mb-2" />
+      {/* Profile Form Card */}
+      <div
+        className="p-4 rounded shadow"
+        style={{ background: "#f8f9fa", border: "1px solid #dee2e6" }}
+      >
+        <form onSubmit={handleSubmit}>
+          <div className="row">
+            <div className="col-md-6">
+              <label className="form-label fw-semibold">Name</label>
+              <input name="name" value={teacherData.name} onChange={handleChange} className="form-control mb-3" />
 
-            <label>City</label>
-            <input name="city" value={teacherData.city} onChange={handleChange} className="form-control mb-2" />
+              <label className="form-label fw-semibold">Email</label>
+              <input name="email" value={teacherData.email} onChange={handleChange} className="form-control mb-3" />
 
-            <label>Phone</label>
-            <input name="phone" value={teacherData.phone} onChange={handleChange} className="form-control mb-2" />
+              <label className="form-label fw-semibold">City</label>
+              <input name="city" value={teacherData.city} onChange={handleChange} className="form-control mb-3" />
 
-            <label>Qualification</label>
-            <input name="qualification" value={teacherData.qualification} onChange={handleChange} className="form-control mb-2" />
+              <label className="form-label fw-semibold">Phone</label>
+              <input name="phone" value={teacherData.phone} onChange={handleChange} className="form-control mb-3" />
+
+              <label className="form-label fw-semibold">Qualification</label>
+              <input name="qualification" value={teacherData.qualification} onChange={handleChange} className="form-control mb-3" />
+            </div>
+
+            <div className="col-md-6">
+              <label className="form-label fw-semibold">Subjects (comma separated)</label>
+              <input name="subjects" value={teacherData.subjects} onChange={handleChange} className="form-control mb-3" />
+
+              <label className="form-label fw-semibold">Availability</label>
+              <input name="availability" value={teacherData.availability} onChange={handleChange} className="form-control mb-3" />
+
+              <label className="form-label fw-semibold">Mode</label>
+              <select name="mode" value={teacherData.mode} onChange={handleChange} className="form-select mb-3">
+                <option value="">Select Mode</option>
+                <option value="Online">Online</option>
+                <option value="Offline">Offline</option>
+                <option value="Both">Both</option>
+              </select>
+
+              <label className="form-label fw-semibold">Fee (₹/hr)</label>
+              <input name="fee" value={teacherData.fee} onChange={handleChange} className="form-control mb-3" />
+
+              <label className="form-label fw-semibold">Experience (years)</label>
+              <input name="experience" value={teacherData.experience} onChange={handleChange} className="form-control mb-3" />
+            </div>
           </div>
 
-          <div className="col-md-6">
-            <label>Subjects</label>
-            <input name="subjects" value={teacherData.subjects} onChange={handleChange} className="form-control mb-2" />
-
-            <label>Availability</label>
-            <input name="availability" value={teacherData.availability} onChange={handleChange} className="form-control mb-2" />
-
-            <label>Mode</label>
-            <select name="mode" value={teacherData.mode} onChange={handleChange} className="form-select mb-2">
-              <option value="">Select</option>
-              <option value="Online">Online</option>
-              <option value="Offline">Offline</option>
-              <option value="Both">Both</option>
-            </select>
-
-            <label>Fee (₹/hr)</label>
-            <input name="fee" value={teacherData.fee} onChange={handleChange} className="form-control mb-2" />
-
-            <label>Experience (years)</label>
-            <input name="experience" value={teacherData.experience} onChange={handleChange} className="form-control mb-2" />
+          <div className="mb-4">
+            <label className="form-label fw-semibold">Bio</label>
+            <textarea name="bio" value={teacherData.bio} onChange={handleChange} className="form-control" rows={4} />
           </div>
-        </div>
 
-        <div className="mb-3">
-          <label>Bio</label>
-          <textarea name="bio" value={teacherData.bio} onChange={handleChange} className="form-control" rows={3} />
-        </div>
+          <div className="text-end">
+            <button type="submit" className="btn btn-success px-4">
+              Update Profile
+            </button>
+          </div>
+        </form>
+      </div>
 
-        <button type="submit" className="btn btn-success">Update Profile</button>
-      </form>
-
-      {/* Toast Container */}
       <ToastContainer position="top-center" autoClose={3000} />
     </div>
   );
