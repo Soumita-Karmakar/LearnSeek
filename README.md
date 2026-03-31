@@ -32,7 +32,7 @@ Students can search for teachers based on subject or location, send messages, an
 
 * React.js
 * Axios
-* CSS / Tailwind (if used)
+* Tailwind 
 
 **Backend:**
 
